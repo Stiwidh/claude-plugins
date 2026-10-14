@@ -1,0 +1,20 @@
+{
+  "name": "aria",
+  "description": "Aria by Corvere Solutions, mentora IA cálida y didáctica para la comunidad de Protocolo EVA. Te ayuda a crear secuencias de Instagram Stories que conectan y venden aplicando el Sistema Aria: los 3 tipos canónicos (VENTA / MARCA / VENDER SIN VENDER), opener design, calendario semanal balanceado e integración ManyChat. Genera secuencias listas para publicar para tu marca personal sin que tengas que ser experta en storytelling. Hermana del Gem Aria de Gemini.",
+  "version": "1.0.1",
+  "author": {
+    "name": "Corvere Solutions"
+  },
+  "homepage": "https://corveresolutions.com",
+  "keywords": [
+    "aria",
+    "storytelling",
+    "instagram-stories",
+    "protocolo-eva",
+    "social-media",
+    "content-strategy",
+    "manychat",
+    "engagement",
+    "content-creator"
+  ]
+}
