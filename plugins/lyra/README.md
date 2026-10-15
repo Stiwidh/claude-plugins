@@ -71,7 +71,7 @@ lyra/
 | `negative-prompt-library` | Negative prompts canónicos por use case (personas, producto, video cinemático, texto, brand, arquitectura, comida) | Patrón |
 | `cot-multi-element-scene` | Chain-of-Thought espacial (foreground / mid-ground / background) para escenas complejas | Técnica |
 | `text-rendering-pattern` | Sintaxis exacta para incluir texto literal en imagen — Nano Banana, GPT Image 2, FLUX.2, Midjourney | Patrón |
-| `audio-cue-syntax` | Sintaxis canónica de audio por plataforma video — Veo 3.1 (`Audio:`), Kling (`[AUDIO: ...]`), Runway (audio en director mode) | Patrón |
+| `audio-cue-syntax` | Sintaxis canónica de audio por plataforma video: Veo 3.1 y Seedance 2.5 (diálogo entre comillas + `SFX:`), Kling 3.0 (`Personaje (tono): línea` + voz atada al element), Runway (audio en director mode) | Patrón |
 
 ---
 
@@ -97,16 +97,18 @@ lyra/
 | Midjourney V8.1 | Imagen | 2K, artistic direction, sin API oficial |
 | FLUX.2 Pro | Imagen | 4MP, typography multi-line, open weights `[dev]` |
 | Veo 3.1 | Video | 4, 6 u 8s · hasta 4K (solo a 8s) · audio nativo |
-| Kling 3.0 | Video | 15s · 4K@60fps · Custom Multi-Shot · Motion Control · voice clone |
-| Seedance 2.5 | Video | 30s (+2 extensiones), multi-shot auto-storyboard, **lip-sync phoneme-level (líder)**, multimodal input (30 imgs + 10 videos + 10 audios) |
+| Gemini Omni Flash | Video | edición conversacional de un vídeo existente |
+| Kling 3.0 | Video | 3-15s · 4K nativo · Multi-Shot y Custom Multi-Shot · voz atada al element · Motion Control |
+| Seedance 2.5 | Video | 4-30s (+ extensiones), varios planos y tramos de tiempo, hasta 1080p, referencias (30 imgs + 10 vídeos + 10 audios) |
 | Runway Gen-4.5 | Video | 60s, multi-scene, motion brush |
+
+Kling 4.0 (anunciado el 30-sep-2026) está en despliegue limitado a 15-oct-2026: Lyra lo anota y avisa, pero no lo recomienda todavía.
 
 **Tier 2 — Cobertura básica:** Ideogram V3, Recraft V4, SD4 Ultra, Wan 2.7 Image, Luma Ray 3.14, Pika 2.5, Hailuo 2.3, Dreamina (wrapper consumer de Seedance 2.5 con UI CapCut), Wan 2.7 Video.
 
 **Tier 3 — Deprecated / EOL:**
 - ⚠️ Sora 2 (API EOL 24-sep-2026)
 - ⚠️ DALL-E 2/3 (deprecated 12-may-2026)
-- Gemini Omni Flash (edición conversacional de vídeo)
 
 ---
 
@@ -185,6 +187,18 @@ Si antes lo instalaste subiendo `lyra.zip`, quita esa copia para no tenerlo repe
 ---
 
 ## 📋 Changelog
+
+### v2.2.0 (2026-10-15)
+**Kling 3.0 y Seedance 2.5 con sus datos de verdad.** La corrección anterior cambió el nombre de los modelos pero dejó dentro los datos de las versiones viejas. Ahora, verificado contra las fuentes oficiales (URL y fecha en cada ficha):
+- **Kling 3.0:** 3-15s, 4K nativo desde el 23-abr-2026, Multi-Shot y Custom Multi-Shot, element con la voz atada, diálogo `Personaje (tono): línea`. Fuera `cfg_scale`, `motion_intensity`, `voice_clone_ref` y `[AUDIO: ...]`, que eran de Kling 2.x
+- **Seedance 2.5:** publicado el 31-jul-2026, 4-30s, hasta 1080p (no 2K), 6 aspect ratios más `adaptive`, referencias 30/10/10 citadas como `@Image 1`, tramos de tiempo, API en BytePlus ModelArk. Fuera el lip-sync "por fonemas" y las variantes Fast/Standard/Pro, que no están en ninguna fuente oficial
+- `audio-cue-syntax`: fuera la fila "Veo 3.1 (T3) Limitado", que contradecía la de Tier 1. Veo 3.1 tampoco aparece ya como deprecado en el auditor
+- Ejemplos de 12s y 15s que mandaban a Veo 3.1 (máximo 8s) corregidos
+- Kling 4.0 anotado como anunciado y en despliegue limitado, sin recomendarlo
+- Gemini Omni Flash estaba listado como Tier 3 en este README: es Tier 1
+
+### v2.1.1 (2026-10-15)
+- Instalación desde el repositorio `Stiwidh/claude-plugins` en vez del ZIP
 
 ### v2.1.0 — 2026-05-18 (mismo día)
 - **Seedance 2.5 promocionado de Tier 2 a Tier 1** (feature signature: multi-shot auto-storyboard + lip-sync phoneme-level + multimodal input nativo 30 imgs + 10 videos + 10 audios)

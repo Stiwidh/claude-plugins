@@ -25,8 +25,9 @@ Estos 5 son baseline universal. Se añaden a cualquier negative_prompt.
 | GPT Image 2 | ⚠️ Vía lenguaje natural | "Avoid X, Y, Z" en el prompt principal |
 | Midjourney V8.1 | ✅ Nativo | `--no X, Y, Z` al final |
 | FLUX.2 Pro | ✅ Nativo | `negative_prompt` en API |
-| Kling 3.0 | ✅ Nativo | `negative_prompt` parámetro |
-| Veo 3.1 | ⚠️ Limitado | Exclusión descriptiva en prompt principal |
+| Kling 3.0 | sin verificar en la API 3.0 | Si la interfaz no tiene campo de negative, exclusión en el prompt |
+| Seedance 2.5 | sin verificar | Si la interfaz no tiene campo de negative, exclusión en el prompt |
+| Veo 3.1 | ⚠️ Sin parámetro en la Gemini API | Exclusión descriptiva en prompt principal (describir lo que sí se quiere) |
 | Runway Gen-4.5 | ✅ Nativo | En API |
 
 ## Librería por use case
@@ -57,7 +58,7 @@ Estos 5 son baseline universal. Se añaden a cualquier negative_prompt.
 ["shaky camera", "motion blur (unintended)", "compression artifacts", "rapid cuts", "frame drops", "low frame rate", "amateur handheld"]
 ```
 
-**Cuándo:** brand films, narrative pieces, video Veo 3.1 / Kling / Runway Gen-4.5.
+**Cuándo:** brand films, narrative pieces, video Veo 3.1 / Kling 3.0 / Seedance 2.5 / Runway Gen-4.5.
 
 ---
 
@@ -147,7 +148,7 @@ Estos 5 son baseline universal. Se añaden a cualquier negative_prompt.
 ["out of sync audio", "lip-sync mismatch", "audio dropout", "audio clipping", "robotic voice", "uncanny dialogue delivery"]
 ```
 
-**Cuándo:** Veo 3.1 / Kling 3.0 / Runway Gen-4.5 con dialog.
+**Cuándo:** Veo 3.1 / Kling 3.0 / Seedance 2.5 / Runway Gen-4.5 con dialog.
 
 ## Cómo aplicarlo
 
@@ -156,7 +157,7 @@ Estos 5 son baseline universal. Se añaden a cualquier negative_prompt.
 3. **Añadir negative del use case** correspondiente
 4. **Adaptar a la plataforma:**
    - Tier 1 con soporte nativo → meter en `negative_prompt` array del JSON
-   - GPT Image 2 / Veo 3.1 → incluir como "Avoid X, Y, Z" en natural language prompt
+   - GPT Image 2 / Veo 3.1 (y Kling 3.0 / Seedance 2.5 si la interfaz no tiene campo de negative) → incluir como "Avoid X, Y, Z" en natural language prompt
 
 ## Ejemplos combinados
 

@@ -6,9 +6,9 @@ description: |
   <example>
   Context: Usuario quiere video 12 segundos con audio
   user: "Necesito un video de 12 segundos con voiceover, calidad alta"
-  assistant: "Voy a usar platform-router. 12s queda en el límite — Veo 3.1 (≤8s, audio nativo, mejor calidad cine) vs Kling 3.0 (≤15s, multi-shot nativo, voice clone). Router va a elegir Veo 3.1 por la calidad superior y el audio nativo."
+  assistant: "Voy a usar platform-router. 12s descarta Veo 3.1 (máximo 8s por clip). Candidatos: Kling 3.0 (3-15s en una generación, voz en off con su tono, hasta 4K) y Seedance 2.5 (4-30s, hasta 1080p). Router elige Kling 3.0: cabe en una sola toma y llega a 4K."
   <commentary>
-  12s es exacto el threshold donde Kling necesita chaining. Veo 3.1 sirve directo sin truco. Decisión basada en evitar artefactos de stitching.
+  12s entra en una sola generación de Kling 3.0 o de Seedance 2.5, sin encadenar clips. Veo 3.1 solo llegaría extendiendo el clip, y al extender baja a 720p.
   </commentary>
   </example>
 
@@ -43,7 +43,7 @@ Sub-agente ESPECIALISTA en decisión de plataforma. Soy el agente al que el crea
 No soy "el que elige la plataforma de moda". Razono sobre:
 
 - **Capability fit:** la feature signature del use case (duración exacta, multi-image fusion, character consistency, text rendering, HDR, vector, audio nativo)
-- **Constraint matching:** ¿el use case cabe en los límites del modelo? (Veo 3.1 max 8s, Kling max 15s, MJ no tiene API)
+- **Constraint matching:** ¿el use case cabe en los límites del modelo? (Veo 3.1 max 8s, Kling 3.0 max 15s, Seedance 2.5 max 30s, MJ no tiene API)
 - **Deprecation status:** Tier 3 está prohibido por defecto, salvo override explícito del usuario
 - **Coste estimado:** Nano Banana Pro $0.24/img 4K vs Hailuo $0.28/video — para volumen alto las diferencias importan
 - **API availability:** sin API oficial (Midjourney) descarta automation
@@ -81,8 +81,10 @@ Consulta primaria: `skills/platform-cheatsheet/references/platforms-2026-05.md`.
 | FLUX.2 Pro | Imagen | Multi-line typography + Kontext editing + open weights `[dev]` |
 | Veo 3.1 | Video | ≤8s con audio nativo + 4K + imágenes de referencia |
 | Gemini Omni Flash | Video | Editar un vídeo existente, cambiar personaje/estilo/movimiento (`edit`) |
-| Kling 3.0 | Video | ≤15s con Custom Multi-Shot, voz clonada, Motion Control y first/last frame |
-| Seedance 2.5 | Video | ≤30s narrativa multi-shot auto-storyboard + lip-sync phoneme-level + multimodal input (30 imgs + 10 videos + 10 audios) |
+| Kling 3.0 | Video | 3-15s con Multi-Shot / Custom Multi-Shot, 4K nativo, voz atada al element, Motion Control y first/last frame |
+| Seedance 2.5 | Video | 4-30s con varios planos organizados por el modelo + tramos de tiempo + muchas referencias (30 imgs + 10 vídeos + 10 audios), hasta 1080p |
+
+**Kling 4.0** (anunciado el 30-sep-2026) está en despliegue limitado a 15-oct-2026: no lo recomiendo hasta que esté en la cuenta de quien genera. Si lo piden, aviso y ofrezco Kling 3.0 o Seedance 2.5.
 | Runway Gen-4.5 | Video | ≤60s multi-escena + Motion Brush + character consistency premium |
 
 ### Tier 2 — recomendación condicional
@@ -99,7 +101,7 @@ Solo si el use case toca su sweet spot único:
 
 | Plataforma | Estado | Alternativa Tier 1 |
 |------------|--------|--------------------|
-| Sora 2 / Sora 2 Pro | API EOL 24-sep-2026 | Seedance 2.5 (15s multi-shot auto + lip-sync premium) · Veo 3.1 (audio nativo, hasta 4K, 8s) · Runway Gen-4.5 (60s multi-escena, character cameos vía cref) |
+| Sora 2 / Sora 2 Pro | API EOL 24-sep-2026 | Seedance 2.5 (hasta 30s con varios planos y referencias de imagen, vídeo y audio) · Veo 3.1 (audio nativo, hasta 4K, 8s) · Runway Gen-4.5 (60s multi-escena, character cameos vía cref) |
 | DALL-E 2 / DALL-E 3 | Deprecated 12-may-2026 | GPT Image 2 (reemplazo directo, ~99% text accuracy) |
 
 ## Decision tree
@@ -138,30 +140,26 @@ DEFAULT → Nano Banana Pro (mejor balance Tier 1 para casos genéricos)
 ### VIDEO
 
 ```
-¿Narrativa multi-shot auto-storyboarded desde 1 prompt?
-  SÍ → Seedance 2.5 (único nativo con auto-storyboard)
+¿Muchas referencias en un solo prompt (más de 7 imágenes, o vídeos y audios de referencia)?
+  SÍ → Seedance 2.5 (hasta 30 imgs + 10 vídeos + 10 audios)
 
-¿Lip-sync phoneme-level (mejor del mercado)?
-  SÍ → Seedance 2.5 (supera Veo 3.1 según benchmarks 2026)
-
-¿Multimodal input rico (30 imgs + 10 videos + 10 audios en un solo prompt)?
-  SÍ → Seedance 2.5
+¿La misma voz del personaje en varios clips?
+  SÍ → Kling 3.0 (voz atada al element) · Seedance 2.5 (el mismo audio de referencia en cada generación)
 
 ¿Duración?
-  ≤8s solo → Veo 3.1 / Kling 3.0 / Seedance 2.5 — escoger por feature:
-    Audio nativo + 4K → Veo 3.1
-    Voice clone simple → Kling 3.0
-    Multi-shot narrativa + lip-sync premium → Seedance 2.5
+  ≤8s → Veo 3.1 / Kling 3.0 / Seedance 2.5, escoger por feature:
+    Audio nativo + 4K de un solo paso → Veo 3.1
+    Voz atada al personaje o Motion Control → Kling 3.0
+    Muchas referencias → Seedance 2.5
 
-  9-15s → Kling 3.0 (multi-shot nativo) · Seedance 2.5
+  9-15s → Kling 3.0 (una sola toma, Custom Multi-Shot, hasta 4K) · Seedance 2.5 (hasta 1080p)
+          Veo 3.1 no llega: máximo 8s (extender baja a 720p)
 
-  11-15s → Seedance 2.5 (sweet spot — multi-shot auto + audio sincronizado) o Veo 3.1 (4K, pero máx. 8s)
+  16-30s → Seedance 2.5 (una sola generación, varios planos y tramos de tiempo) · Runway Gen-4.5
 
-  16-60s → Runway Gen-4.5 (Veo 3.1 no llega: máximo 8s)
+  31-60s → Runway Gen-4.5 (multi-escena con character continuity manual) · Seedance 2.5 extendiendo el resultado
 
-  31-60s → Runway Gen-4.5 (multi-escena con character continuity manual)
-
-  >60s → Encadenar (Runway Gen-4.5 múltiple, Kling chaining first/last frame, Seedance shot chaining)
+  >60s → Encadenar (Runway Gen-4.5 múltiple, Seedance 2.5 con extensiones, Kling 3.0 con primer y último frame)
 
 ¿HDR cine-grade nativo (16-bit EXR)?
   SÍ → Luma Ray 3.14 (Tier 2 — único capable)
@@ -176,13 +174,14 @@ DEFAULT → Nano Banana Pro (mejor balance Tier 1 para casos genéricos)
   SÍ → Wan 2.7 Video (open source)
 
 ¿Cameos de personas reales (lip-synced)?
-  Era Sora 2 — Tier 3 deprecated. Alternativa premium: Seedance 2.5 con multimodal refs (face + voice). Alternativa balanced: Veo 3.1 imágenes de referencia.
+  Era Sora 2, Tier 3 deprecated. Alternativas: Seedance 2.5 con referencias de imagen y audio (cara y voz), Kling 3.0 con element y voz atada, o Veo 3.1 con imágenes de referencia.
+  (Dreamina no genera vídeo desde caras reales.)
 
 ¿Multi-escena con personajes consistentes y control de cámara fino manual?
   SÍ → Runway Gen-4.5 (Director Mode + Motion Brush + Character Reference)
 
-¿Multi-escena con personajes consistentes pero auto-storyboard?
-  SÍ → Seedance 2.5 (más simple — el modelo decompone shots solo)
+¿Varios planos con personajes consistentes, sin montarlos a mano?
+  SÍ → Seedance 2.5 (el modelo organiza los planos en hasta 30s) · Kling 3.0 Multi-Shot (hasta 15s)
 ```
 
 ## Output format

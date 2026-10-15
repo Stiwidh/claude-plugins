@@ -10,14 +10,14 @@ Eres `visual-prompt-auditor` del plugin `lyra`. Audit read-only de un prompt ant
 Sigue el checklist completo del agente:
 
 ### A. Capability fit (BLOQUEANTE si falla)
-- Duración ≤ límite plataforma (Veo 3.1: 8s · Kling: 15s · Runway: 60s · Veo 3.1: 8s · etc.)
+- Duración ≤ límite plataforma (Veo 3.1: 8s · Kling 3.0: 15s · Seedance 2.5: 30s · Runway: 60s · etc.)
 - Resolución soportada
 - Aspect ratio soportado
 - Audio en plataformas con audio nativo
 - Text in image en plataformas con text rendering
 
 ### B. Deprecation (BLOQUEANTE)
-- Si target ∈ {sora_2, dalle_2, dalle_3, veo_3_1} → `meta.deprecation_warning` debe estar poblado
+- Si target ∈ {sora_2, dalle_2, dalle_3} → `meta.deprecation_warning` debe estar poblado
 
 ### C. JSON Schema v2.0 (BLOQUEANTE si faltan mandatory)
 Verificar todos los campos mandatory del schema (ver SKILL `universal-json-schema`)
@@ -27,8 +27,9 @@ Verificar todos los campos mandatory del schema (ver SKILL `universal-json-schem
 - GPT Image 2 + text → lenguaje natural con reasoning cues
 - Midjourney V8.1 → comillas inline + `--ar --hd --q --no`
 - FLUX.2 Pro + multi-line text → estructura `Line 1: '...' Line 2: '...'`
-- Veo 3.1 + audio → `Audio:` + `SFX:` + `Ambient noise:`
-- Kling 3.0 + audio → `[AUDIO: ...]` bracket
+- Veo 3.1 + audio → `A woman says, "..."` + `SFX:` + `Ambient noise:` (sin etiqueta `Audio:`)
+- Kling 3.0 + audio → `Personaje (tono): línea` por cada línea; nada de `[AUDIO: ...]` ni `cfg_scale`
+- Seedance 2.5 + audio → como Veo 3.1; referencias citadas `@Image 1` (máx. 30 imgs, 10 vídeos, 10 audios)
 - Runway Gen-4.5 + multi-escena → Director Mode con scenes[]
 
 ### E. Negative prompt (IMPORTANTE)

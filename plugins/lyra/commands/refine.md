@@ -80,7 +80,8 @@ Workflow de iteración acotada:
 - `meta.target_platform`: "veo_3_1" → "kling_3_0"
 - `technical_params.duration_sec`: si era >15s en Kling, BLOQUEAR y advertir (Kling max 15s)
 - `platform_specific`: limpiar bloque `veo_3_1`, rellenar `kling_3_0` con defaults
-- NL prompt: re-escribir sintaxis de audio de `Audio:` (VEO) a `[AUDIO: ...]` (Kling)
+- NL prompt: re-escribir el diálogo de `A woman says, "..."` (Veo 3.1) a `Woman (tono): línea` (Kling 3.0); SFX, ambiente y música siguen en frases aparte
+- Ganancia: con Kling 3.0 el clip puede pasar de 8s a 15s en una sola toma
 
 ### Ejemplo 4 — añadir texto en imagen
 **Input:** `JSON sin text_in_image. Añadir texto "Black Friday" en bold purple top-right.`

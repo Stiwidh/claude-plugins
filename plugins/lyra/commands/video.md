@@ -11,13 +11,12 @@ Sigue el workflow del agente:
 
 1. **Intake & análisis** — parsear subject, action, duration, audio requirements
 2. **Plataforma:**
-   - Multi-shot narrativo auto-storyboarded desde 1 prompt → **Seedance 2.5**
-   - Lip-sync phoneme-level (mejor del mercado) → **Seedance 2.5**
-   - Multimodal input rico (30 imgs + 10 videos + 10 audios) → **Seedance 2.5**
-   - Duración ≤15s narrativa + audio premium → **Seedance 2.5** (default narrativa corta)
+   - Muchas referencias (30 imgs + 10 vídeos + 10 audios) → **Seedance 2.5**
    - Duración ≤8s + audio nativo + 4K → Veo 3.1
-   - Duración ≤10s + voice clone simple → Kling 3.0
-   - Duración 16-60s + multi-escena + character consistency manual → Runway Gen-4.5
+   - Duración 9-15s en una toma, Multi-Shot, voz atada al personaje o Motion Control → Kling 3.0
+   - Duración 16-30s con varios planos → **Seedance 2.5**
+   - Duración 31-60s + multi-escena + character consistency manual → Runway Gen-4.5
+   - Kling 4.0 pedido → avisar (despliegue limitado a 15-oct-2026) y ofrecer Kling 3.0 o Seedance 2.5
    - HDR cine-grade → Luma Ray 3.14 (Tier 2)
    - Si 2+ candidatos razonables → `platform-router`
    - Si Sora 2 mencionado → warning Tier 3 (API EOL 24-sep-2026) + redirigir a Seedance 2.5, Veo 3.1 o Runway
@@ -25,14 +24,14 @@ Sigue el workflow del agente:
 4. **JSON v2.0** — aplicar `universal-json-schema`. Para video, obligatorio:
    - `action.primary_motion` poblado
    - `technical_params.duration_sec` dentro del límite del modelo
-   - `technical_params.fps` (24 cinematic, 30 social, 48 action)
+   - `technical_params.fps` (24 cinematic, 30 social; Seedance 2.5 genera a 24 fps)
    - `audio.required` correcto
 5. **CoT espacial** si escena con 3+ elementos → `cot-multi-element-scene`
 6. **Audio layering** si `audio.required=true`:
    - Aplicar `audio-cue-syntax` para sintaxis específica del modelo
-   - Veo 3.1: `Audio:`, `SFX:`, `Ambient noise:`, `Music:` separados
-   - Kling 3.0: `[AUDIO: ...]` bracket todo junto
-   - Seedance 2.5: misma sintaxis que Veo 3.1 con unified architecture + lip-sync phoneme-level
+   - Veo 3.1: `A woman says, "..."`, `SFX:`, `Ambient noise:` y la música en frases separadas, sin etiqueta `Audio:`
+   - Kling 3.0: `Personaje (tono): línea` por cada línea de diálogo; SFX, ambiente y música aparte
+   - Seedance 2.5: misma sintaxis que Veo 3.1, con tramos `0-10s: ...` y referencias `@Image 1`
    - Runway: per-scene en Director Mode
 7. **Negative prompt** → defaults canónicos + `["shaky camera", "compression artifacts", "rapid cuts"]` para video + context-specific
 8. **Natural language prompt** optimizado para la plataforma destino

@@ -1,8 +1,14 @@
 # Platforms Catalog — Detailed Reference (mayo 2026)
 
-**Snapshot:** 2026-05-18
-**Versión:** 2.0
+**Snapshot:** 2026-05-18 · **vídeo Tier 1 re-verificado:** 2026-10-15
+**Versión:** 2.1
 **Fuente primaria:** WebSearch oficial 2026 + documentación de cada plataforma
+
+> **Corrección 2026-10-15.** Las fichas de Kling 3.0 y Seedance 2.5 llevaban el nombre nuevo con
+> los datos de Kling 2.6 y Seedance 2.0 (10s, cfg_scale, `[AUDIO: ...]`, 2K, variantes Fast/Pro,
+> lip-sync "por fonemas"). Veo 3.1, Kling 3.0 y Seedance 2.5 llevan ahora dentro la fuente oficial
+> y la fecha de verificación. Lo que no se ha podido verificar se dice. El resto de fichas
+> (imagen, Runway, Tier 2) **no se ha re-verificado** en esta revisión.
 
 Detalle expandido del catálogo. La SKILL.md tiene la tabla resumen — este archivo es la enciclopedia.
 
@@ -230,16 +236,20 @@ Producción profesional con identidad de personaje persistente · fotografía de
 - **Developer:** Google DeepMind
 - **Variantes:** Veo 3.1 · Veo 3.1 Fast · Veo 3.1 Lite
 
-**Verificado:** 5-ago-2026 contra `ai.google.dev/gemini-api/docs/veo` y `deepmind.google/models/veo/`
+**Verificado:** 15-oct-2026 contra `ai.google.dev/gemini-api/docs/veo`, `deepmind.google/models/veo/` y la guía oficial de prompting (`cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1`). No existe ningún "Veo 4".
 **Model IDs:** `veo-3.1-generate-preview` · `veo-3.1-fast-generate-preview` · `veo-3.1-lite-generate-preview`
 
 #### Capabilities
 - Duración: **4, 6 u 8 segundos.** Obligatorio 8s con extensión, imágenes de referencia, 1080p o 4K
-- Resolución: 720p · 1080p (solo a 8s) · 4K (solo a 8s). Con extensión de vídeo, solo 720p
-- Aspect ratios: 16:9 (por defecto) y 9:16. **No hay 1:1**
-- **Audio nativo siempre activo**, no se desactiva: diálogo, SFX y ambiente
+- Resolución: 720p · 1080p (solo a 8s) · 4K (solo a 8s, no en Lite). Con extensión de vídeo, solo 720p
+- Aspect ratios: 16:9 (por defecto) y 9:16. **No hay 1:1 ni 4:5**
+- **Audio nativo siempre activo**, no se desactiva: diálogo, SFX, ambiente y música
 - **Hasta 3 imágenes de referencia** (obligan a duración 8s)
-- Extensión de vídeo e interpolación de primer y último frame
+- Interpolación de primer y último frame
+- Extensión de vídeo: +7s por extensión, hasta 20 veces (máx. 148s), solo 720p
+- Varios planos dentro del clip con prompts por tramos de tiempo (`[00:00-00:02] ...`)
+- Personas: en la UE solo `allow_adult`
+- Sin parámetro de negative prompt en la Gemini API: las exclusiones se describen en el prompt
 - Variante Lite: solo text-to-video e image-to-video, sin referencias ni extensión
 
 #### Acceso
@@ -247,8 +257,7 @@ Gemini API, Google AI Studio y Vertex AI. También en la app de Gemini y en Flow
 
 #### Sintaxis del prompt
 ```
-[Camera move + lens]: [Subject] [Action], in [Setting + atmosphere], lit by [Light source].
-Style: [Texture + color grading].
+[Cinematografía] + [Sujeto] + [Acción] + [Contexto] + [Estilo y ambiente]
 [El audio va en frases aparte, sin etiqueta "Audio:"]
 
 Diálogo (entre comillas):
@@ -260,11 +269,16 @@ SFX: glass shattering on impact.
 Ambiente:
 Ambient noise: distant traffic, light rain on metal roof.
 
-⚠️ Veo 3.1 NO tiene multi-shot ni "Director's Mode". Para varios planos en una
-generación, el modelo es Kling 3.0 (Custom Multi-Shot). Aquí solo se puede
-extender el clip, y al extender baja a 720p.
+Música (frase natural):
+A gentle orchestral score plays at low volume.
+
+Varios planos dentro del clip (tramos de tiempo):
+[00:00-00:03] Medium shot: ...
+[00:03-00:06] Close-up: ...
+[00:06-00:08] Wide shot: ...
 
 Imágenes de referencia (máx. 3, obligan a duración 8s):
+"Using the provided images for [personaje], create ..."
 {
   "platform_specific": {
     "veo_3_1": {
@@ -274,6 +288,8 @@ Imágenes de referencia (máx. 3, obligan a duración 8s):
   }
 }
 ```
+
+⚠️ Veo 3.1 no tiene "Director's Mode" ni storyboard aparte: los varios planos se dirigen por tramos dentro de los 8s. Para pasar de 8s, extender el clip (baja a 720p), encadenar con primer y último frame, o cambiar a Kling 3.0 (15s) o Seedance 2.5 (30s).
 
 #### `platform_specific.veo_3_1`
 ```json
@@ -288,135 +304,156 @@ Imágenes de referencia (máx. 3, obligan a duración 8s):
 ```
 
 #### Sweet spot
-Pieza cinemática de hasta 8s con audio nativo de un solo paso. Para más de 8s hay que extender el clip (baja a 720p) o cambiar de modelo.
+Pieza cinemática de hasta 8s con audio nativo de un solo paso, a 4K. Para más de 8s hay que extender el clip (baja a 720p) o cambiar de modelo.
 
 ---
 
 ### Kling 3.0 (Kuaishou)
 
 - **Developer:** Kuaishou Technology
-- **Lanzamiento:** 3-dic-2025
-- **Sucesor:** Kling 3.0 referenciado en agregadores (Higgsfield) — 2.6 sigue deploy de referencia documentado
+- **Modelos:** Kling VIDEO 3.0 · Kling VIDEO 3.0 Omni
+- **4K nativo:** desde el 23-abr-2026 en la serie 3.0
+
+**Verificado:** 15-oct-2026 contra `kling.ai/quickstart/klingai-video-3-model-user-guide`, `kling.ai/quickstart/klingai-video-3-omni-model-user-guide`, `kling.ai/blog/kling-ai-introduces-native-4k-video-model` y `kling.ai/blog/kling-4-vs-3`.
+
+> **Kling 4.0** (anunciado el 30-sep-2026): hasta 30s nativos, hasta 10 keyframes, hasta 15 referencias combinadas, HDR 10-bit a 1080p y 4K. A 15-oct-2026 está en despliegue limitado (Kling 4.0 Flash en acceso anticipado desde el 28-sep) y el modelo completo "sale en octubre". **No se recomienda** hasta que esté disponible en la cuenta de quien genera: si la persona lo pide, se avisa y se ofrece Kling 3.0 o Seedance 2.5.
 
 #### Capabilities
-- Resolución: 1080p @ 48 fps (4K upscale post)
-- Duración: 10s por clip (extensible a 3 min con chaining first/last frame)
-- **Audio nativo single-pass:** voz + SFX + ambiente + música simultáneo
-- **Voice Control:** clonado de voz desde upload
-- Elements: hasta 4 imágenes ref para consistencia
-- First/last frame chaining
+- Duración: **de 3 a 15s** por generación, a elegir
+- Resolución: 720p · 1080p · **4K nativo**
+- Aspect ratios: 16:9, 9:16 y 1:1 según la referencia de la API de kling.ai (no se ha podido leer la página entera: confirmarlo en la interfaz)
+- **Audio nativo** (diálogo, SFX, ambiente, música) o sin audio, a elegir
+- Diálogo en chino, inglés, japonés, coreano y español, con acentos y dialectos
+- **Multi-Shot** (el modelo planifica los planos) y **Custom Multi-Shot** (número de planos y duración de cada uno)
+- **Elements:** personaje fijo a partir de 2-4 imágenes desde varios ángulos, o de un vídeo de 3-8s
+- **Voz atada al element:** audio limpio de una sola persona (la guía de Omni recomienda 5-30s); la voz se mantiene entre vídeos
+- Omni: hasta 7 imágenes/elements sin vídeo, o hasta 4 con un vídeo de referencia
+- Primer y último frame
+- Diálogo de varios personajes con cada línea atribuida
+- Motion Control como herramienta aparte
 
-#### Parámetros críticos
-| Parameter | Type | Range | Description |
-|-----------|------|-------|-------------|
-| `cfgScale` | float | 1.0 - 20.0 | Prompt adherence (7.5 recomendado) |
-| `motion_type` | enum | slow / medium / fast | Intensidad de movimiento |
-| `camera_control` | enum | static / pan / zoom / tracking | Cinematic camera |
+#### Parámetros de la API 3.0
+| Parameter | Valores | Description |
+|-----------|---------|-------------|
+| `duration` | 3-15 | Segundos |
+| `resolution` | 720p / 1080p / 4K | Según plan |
+| `audio` | native / off | Audio nativo o vídeo mudo |
+| `multi_shot` | true / false | Sin él, un solo plano aunque el prompt describa varios |
+
+`cfg_scale`, `motion_intensity`, `voice_clone_ref` y la etiqueta `[AUDIO: ...]` eran de Kling 2.x y de algunos agregadores; **no aparecen en la documentación de 3.0**. No usarlos.
+
+#### Coste (créditos Kling, guía oficial)
+| Modo | Coste |
+|------|-------|
+| 720p sin audio | ~6 créditos/s (30 por 5s) |
+| 1080p con audio nativo | ~12 créditos/s (60 por 5s) |
+| Control de voz | +2 créditos/s |
+| 4K | 30 créditos/s |
 
 #### Sintaxis del prompt
 ```
-[Subject] + [Action] + [Environment] + [Camera + fps] + [Style] + [Audio cue]
+[Subject] + [Action] + [Environment] + [Camera] + [Style]
 
-Audio (bracket syntax):
-[AUDIO: Heavy rain on pavement, distant thunder, approaching footsteps, zippo lighter click]
+Diálogo (personaje y tono entre paréntesis, sintaxis de la guía oficial):
+Founder (warm, confident tone): Llevo dos meses con esto y recupero una hora al día.
+Voiceover (calm female voice, Spanish from Spain): Así empieza tu mañana.
 
-Camera + FPS:
-"Low-angle tracking shot following subject from behind, 48fps cinematic motion"
+Resto del audio en frases separadas:
+Sound effects: a soft cup clink near the end.
+Ambient: busy cafe, distant chatter, espresso machine hiss.
+Music: light lo-fi instrumental at very low volume.
 
-CFG scale:
-- 1.0-5.0: Creative, loose
-- 5.0-10.0: Balanced (default 7.5)
-- 10.0-20.0: Strict adherence
+Custom Multi-Shot (con Multi-Shot activo):
+Shot 1 (4s): eye-level medium shot ...
+Shot 2 (5s): slow dolly-in ...
+Shot 3 (6s): close-up ...
 
-Voice cloning:
-"voice_clone_ref": "https://corvere.com/voices/founder.mp3"
-
-Elements (4 refs character consistency):
-"elements_refs": ["url1", "url2", "url3", "url4"]
-
-First/last frame chaining (>10s):
-Clip 1 termina con frame B → Clip 2 empieza con frame B
+Element con voz atada:
+se crea una vez en Kling y se reutiliza; si ya tiene voz, no describir otra en el prompt.
 ```
 
 #### `platform_specific.kling_3_0`
 ```json
 {
-  "cfg_scale": 7.5,
-  "motion_intensity": "medium",
-  "voice_clone_ref": null,
-  "first_frame_ref": null
+  "model": "video_3_0 | video_3_0_omni",
+  "audio": "native | off",
+  "multi_shot": false,
+  "custom_shots": [],
+  "element": null,
+  "voice_bound_to_element": false,
+  "first_frame_ref": null,
+  "last_frame_ref": null
 }
 ```
 
 #### Sweet spot
-Clips con audio sincronizado coste-eficiente · diálogo en mandarín o inglés · long-form (>8s) cuando Veo 3.1 no es accesible.
+Piezas de 8 a 15s en una sola generación, a 1080p o 4K, con varios planos y con la voz del personaje coherente entre clips.
 
 ---
 
 ### Seedance 2.5 (ByteDance)
 
-- **Developer:** ByteDance
-- **Lanzamiento:** feb-2026 API pública, variantes Fast / Standard / Pro
+- **Developer:** ByteDance Seed
+- **Publicado:** 31-jul-2026
+- **API:** BytePlus ModelArk, model ID `dreamina-seedance-2-5-260628`. El anuncio del 31-jul la daba como "próximamente"; a 15-oct-2026 BytePlus la anuncia disponible para clientes
+
+**Verificado:** 15-oct-2026 contra `seed.bytedance.com/en/seedance2_5`, `seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5`, `ai.byteplus.com/en/activity/seedance2-5` y el tutorial de ModelArk (`docs.byteplus.com/en/docs/ModelArk/2607688`).
 
 #### Capabilities
-- Duración: hasta **30s** en una generación, extensible dos veces más
-- Resolución: 480p · 720p · **2K nativo** (+30% speed boost en 2K)
-- Aspect ratios: **21:9, 16:9, 4:3, 1:1, 3:4, 9:16** (los 6 principales)
-- **Audio-video unified architecture:** el modelo "oye" mientras genera — natural reverb, proximity effects para dialog
-- **Lip-sync phoneme-level:** mejor del mercado según benchmarks 2026 (supera Veo 3.1)
-- **Multi-shot storyboard automático nativo:** un solo prompt → modelo decompone en shots con coherencia personajes/escenas. Feature signature única
-- **Multimodal input nativo:** Text + hasta **30 imágenes** + **10 vídeos** + **10 audios** de referencia en una sola pasada
-- Multilingual performance: líder en consistencia cross-language vs Sora 2, Veo 3.1, Kling 3.0
+- Duración: **de 4 a 30s** en una sola generación, o `-1` para que el modelo la decida; con extensiones sucesivas sobre el resultado (la página del modelo habla de extender dos veces; el blog, de "varias rondas")
+- **Varios planos dentro de los 30s:** el modelo organiza planos conectados (planteamiento, desarrollo, giro, cierre)
+- **Control por tramos de tiempo** en el prompt (`0-10s: ...`, `11-20s: ...`) y edición puntual posterior de personajes, acciones o tramos concretos
+- **Referencias multimodales:** hasta **30 imágenes**, **10 vídeos** y **10 audios** en una sola pasada (50 en total, y como máximo 30s sumando los vídeos y audios), citados en el prompt como `@Image 1`, `@Video 1`...
+- Audio y vídeo generados juntos (diálogo, efectos, ambiente); en la API se pide con `generate_audio`
+- Más de 10 idiomas de forma nativa
+- Resolución: **480p · 720p · 1080p** a 24 fps (1080p en 10 bits y H.265). Modo borrador (Draft) a 480p para validar antes del final. No hay 2K ni 4K en la documentación
+- Aspect ratios: **16:9, 4:3, 1:1, 3:4, 9:16, 21:9** y `adaptive` (el modelo elige según el prompt y las referencias)
 
-#### Variantes
-| Variante | Use case |
-|----------|----------|
-| Seedance 2.5 Fast | Iteración / prototipado / volumen |
-| Seedance 2.5 Standard | Default — balance calidad/coste |
-| Seedance 2.5 Pro | Producción premium — máxima calidad multi-shot + audio |
+**No verificado en fuente oficial** (no afirmarlo): lip-sync "por fonemas" y variantes Fast / Standard / Pro de 2.5.
 
 #### Acceso
-API pública: Replicate · fal.ai · Atlas Cloud · BytePlus · Apiyi
+Jimeng AI, Doubao y Dreamina; API en BytePlus ModelArk. En agregadores, comprobar qué versión ofrecen: a junio de 2026 Higgsfield listaba Seedance 2.0.
 
 #### Sintaxis del prompt
 ```
-[Scene description natural — el modelo auto-storyboards los shots]
+[Descripción natural de la escena y del arco: el modelo organiza los planos]
 
-Audio sincronizado (unified architecture):
-A founder says, "We just shipped v2."
+Referencias citadas por número:
+The woman from @Image 1 walks into the office from @Image 2 ...
+
+Tramos de tiempo (sintaxis de los ejemplos oficiales):
+0-10s: wide establishing, the woman from @Image 1 enters the office.
+11-20s: close-up, she picks up a red apple.
+21-30s: medium shot, she speaks to camera.
+
+Audio en frases separadas:
+A woman says, "..."
 SFX: keyboard typing, soft pen tap on desk.
-Ambient: open office — light conversation, climate hum.
+Ambient: open office, light conversation, climate hum.
 Music: ambient electronic, low volume.
 
-Shot breakdown manual (override auto-storyboard):
-"Generate with 3 shots:
-Shot 1 (4s): wide establishing — founder at desk
-Shot 2 (5s): close-up reaction
-Shot 3 (6s): medium with dialog"
-
-Multimodal references:
-image_refs: [URL1, ..., URL9]  (consistencia personaje + estética)
-video_refs: [URL1, ..., URL3]  (consistencia movement/style)
-audio_refs: [URL1, ..., URL3]  (voice clone, music style)
-
-Duration auto: duration_sec = -1 → modelo decide óptimo
+Extensión (sobre un resultado anterior):
+Continue from the visuals and subjects in @Video 1 and generate another 30-second clip,
+keeping the characters, scene, visual style and sound consistent.
 ```
 
 #### `platform_specific.seedance_2_5`
 ```json
 {
-  "variant": "standard",
-  "auto_storyboard": true,
-  "shot_breakdown": null,
+  "duration_sec": 30,
+  "resolution": "480p | 720p | 1080p",
+  "ratio": "16:9 | 4:3 | 1:1 | 3:4 | 9:16 | 21:9 | adaptive",
+  "generate_audio": true,
   "image_refs": [],
   "video_refs": [],
   "audio_refs": [],
-  "duration_auto": false
+  "timestamped_segments": [],
+  "extend_from": null
 }
 ```
 
 #### Sweet spot
-**Narrativa multi-shot con audio sincronizado profesional desde un solo prompt.** Mejor que Runway Gen-4.5 para narrativa ≤15s (sin Director Mode manual). Mejor que Veo 3.1 en lip-sync (phoneme-level). Mejor que Kling 3.0 en multi-shot automático. Multimodal input nativo (30 imgs + 10 videos + 10 audios) = único en el mercado a mayo 2026.
+**Narrativa de hasta 30s con varios planos y audio desde un solo prompt**, y piezas que necesitan muchas referencias (hasta 30 imágenes, 10 vídeos y 10 audios). Para más de 30s, extender sobre el resultado manteniendo personajes y escena.
 
 ---
 
@@ -424,7 +461,7 @@ Duration auto: duration_sec = -1 → modelo decide óptimo
 
 - **Developer:** Runway
 - **Lanzamiento:** Gen-4 mar-2025, Gen-4.5 dic-2025
-- **Ranking:** #1 en Video Arena vs Veo 3.1 y Kling 3.0 (a mayo 2026)
+- **Ranking:** #1 en Video Arena (dato de mayo 2026, sin re-verificar)
 
 #### Capabilities
 - Duración: hasta **60 segundos**
@@ -510,8 +547,8 @@ Workflow profesional multi-escena con personajes consistentes y control de cáma
 ### Dreamina (wrapper consumer de Seedance 2.5) (Tier 2)
 
 - **Developer:** ByteDance
-- **Lanzamiento:** feb-2026, integrado en CapCut desde mar-2026
-- **Diferencia con Seedance 2.5 Tier 1:** Dreamina es la UI consumer (CapCut) con safety policy más estricta — no genera vídeo desde caras reales.
+- **Lanzamiento:** feb-2026, integrado en CapCut desde mar-2026 (dato de mayo 2026). BytePlus ya anuncia "Dreamina Seedance 2.5"
+- **Diferencia con Seedance 2.5 Tier 1:** Dreamina es la UI consumer (CapCut) con safety policy más estricta: no genera vídeo desde caras reales.
 - **Sweet spot:** Content social vertical (tutorial / recipe / fitness), integración nativa con edición CapCut. Si cliente edita en CapCut sin caras reales → Dreamina. Si requiere API + caras reales + control fino → **Seedance 2.5 Tier 1 directo**.
 
 ### Wan 2.7 Video (Tier 2)
@@ -558,16 +595,17 @@ Workflow profesional multi-escena con personajes consistentes y control de cáma
 ### Video
 | Capability | Veo 3.1 | Kling 3.0 | Seedance 2.5 | Runway Gen-4.5 |
 |------------|:--:|:--:|:--:|:--:|
-| Resolución máx | 4K | 1080p (4K up) | 2K | 4K |
-| Duración máx | 8s | 10s | 15s | 60s |
-| Audio nativo | ✅ siempre activo | ✅ Single-pass | ✅ Unified architecture | ✅ |
-| Lip-sync accuracy | preciso | Bueno | **Phoneme-level (líder)** | Bueno |
-| Multi-shot auto | ❌ (solo extensión de clip) | **✅ Custom Multi-Shot nativo** | **✅ Auto-storyboard nativo** | Director Mode (manual) |
-| Multimodal input | Avatar ref | Elements (4 imgs) | **30 imgs + 10 videos + 10 audios** | Char ref |
-| Voice clone | Imágenes de referencia (máx. 3) | ✅ Audio upload | ✅ Audio ref | Char reference |
-| API oficial | ✅ | ✅ | ✅ | ✅ |
+| Resolución máx | 4K (solo a 8s) | 4K nativo | 1080p (10 bits) | 4K |
+| Duración máx por generación | 8s (extensión +7s en 720p) | 15s | 30s (+ extensiones) | 60s |
+| Audio nativo | ✅ siempre activo | ✅ nativo u off | ✅ audio y vídeo juntos | ✅ |
+| Varios planos en una generación | por tramos de tiempo dentro de 8s | **✅ Multi-Shot y Custom Multi-Shot** | **✅ planos organizados por el modelo + tramos** | Director Mode (manual) |
+| Referencias | hasta 3 imágenes | elements de 2-4 imágenes (Omni: hasta 7) | **30 imgs + 10 vídeos + 10 audios** | Char ref |
+| Voz del personaje desde audio | ❌ | ✅ voz atada al element | ✅ audios de referencia | Char reference |
+| API oficial | ✅ | ✅ | ✅ BytePlus ModelArk | ✅ |
 | Open weights | ❌ | ❌ | ❌ | ❌ |
+
+Las columnas de Veo 3.1, Kling 3.0 y Seedance 2.5 están verificadas el 2026-10-15 (fuentes en cada ficha). La de Runway no se ha re-verificado.
 
 ---
 
-**Próxima revisión:** 2026-08-18 o tras anuncio de nueva versión Tier 1 (whichever first)
+**Próxima revisión:** cuando Kling 4.0 salga del despliegue limitado (anunciado para octubre de 2026) o tras anuncio de nueva versión Tier 1, lo que llegue antes.

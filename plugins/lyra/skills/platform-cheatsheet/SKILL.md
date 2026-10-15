@@ -1,6 +1,6 @@
 ---
 name: platform-cheatsheet
-description: Cobertura completa Tier 1 / Tier 2 / Tier 3 de plataformas de generación de imagen y video a mayo 2026. Specs técnicos, sintaxis de prompt, pricing, capability sweet spots, deprecation status. Aplicar cuando se necesita confirmar capabilities exactas de una plataforma antes de generar, justificar elección de modelo, o detectar mismatch de capacidad.
+description: Cobertura completa Tier 1 / Tier 2 / Tier 3 de plataformas de generación de imagen y video a mayo 2026 (vídeo Tier 1 re-verificado el 2026-10-15). Specs técnicos, sintaxis de prompt, pricing, capability sweet spots, deprecation status. Aplicar cuando se necesita confirmar capabilities exactas de una plataforma antes de generar, justificar elección de modelo, o detectar mismatch de capacidad.
 user-invocable: true
 argument-hint: "[platform_name]"
 allowed-tools:
@@ -23,8 +23,10 @@ Tabla resumen rápida + detalle expandido en `references/platforms-2026-05.md`.
 | **FLUX.2 Pro** | Imagen | 4 MP | — | — | Multi-line typography | ✅ | Producción pro + character persistence + open weights `[dev]` |
 | **Veo 3.1** | Video | 4K (solo a 8s) | 4/6/8s | ✅ siempre activo | 3 imgs ref | ✅ | Clip corto con audio nativo en 4K |
 | **Gemini Omni Flash** | Video | no publicada | 10s (anuncio) | ✅ | texto+imagen+vídeo (audio NO) | ✅ | **Editar un vídeo ya hecho hablando con él** |
-| **Kling 3.0** | Video | 1080p @ 48fps | ≤10s | ✅ Single-pass | — | ✅ | Audio sincronizado coste-eficiente + voice clone |
-| **Seedance 2.5** | Video | 2K | ≤15s | ✅ Unified arch + phoneme lip-sync | — | ✅ | Multi-shot auto-storyboard + lip-sync líder + multimodal input (9img+3vid+3audio) |
+| **Kling 3.0** | Video | 4K nativo | 3-15s | ✅ nativo u off | n/a | ✅ | 8-15s en una toma con Multi-Shot + voz atada al element |
+| **Seedance 2.5** | Video | 1080p | 4-30s (+ extensiones) | ✅ audio y vídeo juntos | n/a | ✅ BytePlus ModelArk | Varios planos hasta 30s + muchas referencias (30 img + 10 vídeos + 10 audios) |
+
+**Kling 4.0** (anunciado el 30-sep-2026, 30s y 10 keyframes) está en despliegue limitado a 15-oct-2026: no se recomienda hasta que esté en la cuenta de quien genera.
 | **Runway Gen-4.5** | Video | 4K | ≤60s | ✅ | — | ✅ | Multi-escena + character consistency + Motion Brush |
 
 ## Tier 2 — Cobertura básica
@@ -91,41 +93,44 @@ Typography: [Font] [Weight], spacing [tight/loose], color [hex]
 
 ### Veo 3.1
 ```
-[Camera move + lens]: [Subject] [Action], in [Setting + atmosphere], lit by [Light source].
+[Cinematografía]: [Subject] [Action], in [Setting + atmosphere], lit by [Light source].
 Style: [Texture].
-Audio: A woman says, "..."
+A woman says, "..."
 SFX: glass shattering.
 Ambient noise: distant traffic.
+(audio en frases aparte, sin etiqueta "Audio:"; varios planos por tramos [00:00-00:03])
 ```
 
 ### Kling 3.0
 ```
-[Subject + action] + [Environment] + [Camera + fps] + [Style]
+[Subject + action] + [Environment] + [Camera] + [Style]
 
-[AUDIO: Heavy rain, distant sirens, footsteps]
+Founder (warm, confident tone): Llevo dos meses con esto.
+Sound effects: a soft cup clink near the end.
+Ambient: busy cafe, distant chatter.
+Music: light lo-fi at very low volume.
 
-cfg_scale: 7.5 (default), motion_intensity: medium (default)
+Custom Multi-Shot (con Multi-Shot activo):
+Shot 1 (4s): ... · Shot 2 (5s): ... · Shot 3 (6s): ...
+(sin cfg_scale ni [AUDIO: ...]: no existen en la documentación de 3.0)
 ```
 
 ### Seedance 2.5
 ```
-[Scene description natural — modelo auto-storyboards en multi-shots]
+[Descripción natural de la escena y del arco: el modelo organiza los planos]
 
-Audio sincronizado (unified architecture):
-A founder says, "..."
+The woman from @Image 1 enters the office from @Image 2.
+0-10s: wide establishing ...
+11-20s: close-up ...
+21-30s: medium shot, she speaks to camera.
+
+A woman says, "..."
 SFX: keyboard typing, soft pen tap.
 Ambient: open office hum.
 Music: ambient electronic, low volume.
 
-Shot breakdown manual (override auto):
-"Generate with 3 shots:
-Shot 1 (4s): wide establishing
-Shot 2 (5s): close-up reaction
-Shot 3 (6s): medium with dialog"
-
-Multimodal refs: image_refs[9] + video_refs[3] + audio_refs[3]
-Variants: fast / standard / pro
-Duration auto: duration_sec = -1
+Refs: hasta 30 imágenes + 10 vídeos + 10 audios, citados @Image 1, @Video 1...
+Duración 4-30s o -1 (decide el modelo) · ratio 16:9, 4:3, 1:1, 3:4, 9:16, 21:9 o adaptive
 ```
 
 ### Runway Gen-4.5
@@ -151,7 +156,8 @@ scenes: [
 | FLUX.2 Pro | $0.03/MP texto-a-imagen · $0.045/MP edición |
 | Veo 3.1 | Gemini API / AI Studio / Vertex AI, app de Gemini y Flow |
 | Gemini Omni Flash | App de Gemini, Flow, YouTube Shorts, Google Vids, AI Studio y Gemini API |
-| Kling 3.0 | Variable por créditos (Kuaishou / agregadores) |
+| Kling 3.0 | Créditos Kling: ~6/s a 720p sin audio · ~12/s a 1080p con audio · 30/s a 4K |
+| Seedance 2.5 | BytePlus ModelArk (por tokens) · Jimeng / Doubao / Dreamina |
 | Runway Gen-4.5 | $35/mes Pro (2,250 créditos) · $95/mes Unlimited |
 | Hailuo 2.3 | $0.28/video |
 
@@ -165,18 +171,18 @@ scenes: [
 | Image self-host on-prem | **FLUX.2 [dev]** |
 | Image vector / SVG | **Recraft V4** (Tier 2) |
 | Video ≤8s con audio nativo + 4K | **Veo 3.1** |
-| Video ≤15s con multi-shot, voz clonada o Motion Control | **Kling 3.0** |
-| Video ≤15s multi-shot auto + lip-sync premium + multimodal input | **Seedance 2.5** |
+| Video ≤15s con Multi-Shot, voz atada al personaje o Motion Control | **Kling 3.0** |
+| Video ≤30s con varios planos o muchas referencias (imágenes, vídeos, audios) | **Seedance 2.5** |
 | Video ≤60s multi-escena manual Director Mode | **Runway Gen-4.5** |
 | Video HDR cine | **Luma Ray 3.14** (Tier 2) |
 | Video low-cost UGC volumen | **Hailuo 2.3** (Tier 2) |
 
 ## Casos límite que requieren router
 
-- Video 11-15s narrativa (Veo 3.1 vs Seedance 2.5 — auto-storyboard sí o no)
+- Video 9-15s narrativa (Kling 3.0 con Custom Multi-Shot vs Seedance 2.5 con tramos de tiempo)
 - Image con brand identity Y texto largo (Nano Banana vs GPT Image 2)
-- Video 30-60s con character consistency (Runway vs Veo 3.1 chaining vs Seedance shot chaining)
-- Video con lip-sync crítico (Seedance phoneme-level vs Veo 3.1 preciso)
+- Video 30-60s con character consistency (Runway vs Seedance 2.5 con extensión vs Veo 3.1 encadenado)
+- Video con la misma voz en varios clips (Kling 3.0 voz atada al element vs Seedance 2.5 audio de referencia)
 - Producto que pide Sora 2 (Tier 3 → router decide alternativa)
 
 En todos esos casos derivar a `platform-router`.

@@ -1,7 +1,7 @@
 ---
 name: visual-prompt-auditor
 description: |
-  AUDITOR del plugin `lyra`. Read-only review pre-generación. Audita el JSON + natural language prompt antes de enviarlo a la plataforma destino. Detecta vague terms, conflicting instructions, platform mismatch, negative prompt ausente, deprecation warnings faltantes, aspect ratio incoherente con use case, sintaxis incorrecta del modelo (e.g., `--no` en plataforma que no lo soporta, `[AUDIO: ]` en Veo 3.1 cuando es `Audio:`). Devuelve reporte estructurado con severidad — BLOQUEANTE / IMPORTANTE / NICE-TO-FIX. NO refactoriza el prompt (eso es `lyra-engineer`), NO genera nuevo (eso es el creator), NO elige plataforma (eso es `platform-router`).
+  AUDITOR del plugin `lyra`. Read-only review pre-generación. Audita el JSON + natural language prompt antes de enviarlo a la plataforma destino. Detecta vague terms, conflicting instructions, platform mismatch, negative prompt ausente, deprecation warnings faltantes, aspect ratio incoherente con use case, sintaxis incorrecta del modelo (e.g., `--no` en plataforma que no lo soporta, `[AUDIO: ]` o `cfg_scale` en Kling 3.0, que no existen en su documentación). Devuelve reporte estructurado con severidad — BLOQUEANTE / IMPORTANTE / NICE-TO-FIX. NO refactoriza el prompt (eso es `lyra-engineer`), NO genera nuevo (eso es el creator), NO elige plataforma (eso es `platform-router`).
 
   <example>
   Context: Usuario va a generar para campaña pago — quiere validar antes
@@ -57,20 +57,20 @@ Mi output es reporte estructurado. El creator decide qué fixear basado en mi se
 ### A. Capability fit (BLOQUEANTE si falla)
 
 - [ ] `technical_params.duration_sec` ≤ límite plataforma
-  - Veo 3.1: ≤8s
-  - Kling 3.0: ≤15s
-  - Seedance 2.5: hasta 30s en una generación (+2 extensiones)
+  - Veo 3.1: 4, 6 u 8s (8s obligado con 1080p, 4K, referencias o extensión)
+  - Kling 3.0: 3-15s
+  - Seedance 2.5: 4-30s en una generación (+ extensiones)
   - Runway Gen-4.5: ≤60s
-  - Veo 3.1: ≤8s
   - Hailuo, Pika, Dreamina: ≤15s
-- [ ] `technical_params.resolution` soportada por plataforma
-- [ ] `technical_params.aspect_ratio` soportada por plataforma
+  - Kling 4.0: despliegue limitado a 15-oct-2026 → IMPORTANTE: avisar y ofrecer Kling 3.0 o Seedance 2.5
+- [ ] `technical_params.resolution` soportada por plataforma (Seedance 2.5: máximo 1080p, no hay 2K ni 4K)
+- [ ] `technical_params.aspect_ratio` soportada por plataforma (Veo 3.1: solo 16:9 y 9:16)
 - [ ] `audio.required=true` solo en plataformas con audio nativo (Veo 3.1, Kling 3.0, Seedance 2.5, Runway Gen-4.5)
 - [ ] `text_in_image.elements` poblado solo en plataformas con text rendering (Nano Banana, GPT Image 2, MJ, FLUX)
 
 ### B. Deprecation (BLOQUEANTE)
 
-- [ ] Si `meta.target_platform` ∈ {sora_2, dalle_2, dalle_3, veo_3_1}:
+- [ ] Si `meta.target_platform` ∈ {sora_2, dalle_2, dalle_3}:
   - `meta.deprecation_warning` poblado con fecha EOL y alternativa
   - Si no → BLOQUEANTE
 
@@ -100,11 +100,12 @@ Para natural language prompt:
 - [ ] **Midjourney V8.1 + text:** texto en comillas inline `"TEXT"`, no en bracket
 - [ ] **Midjourney V8.1 + parámetros:** usa `--ar`, `--hd`, `--q`, `--cref`, `--sref`, `--no` (no parámetros JSON)
 - [ ] **FLUX.2 + multi-line text:** estructura tipo `Line 1: '...' Line 2: '...'`
-- [ ] **Veo 3.1 + audio:** sintaxis `Audio: A woman says, "..."` + `SFX:` + `Ambient noise:`
-- [ ] **Kling 3.0 + audio:** sintaxis `[AUDIO: ...]` bracket
-- [ ] **Seedance 2.5 + audio:** misma sintaxis que Veo 3.1 (`Audio:` + `SFX:` + `Ambient:` + `Music:`)
-- [ ] **Seedance 2.5 + multimodal:** `image_refs[]` ≤ 9, `video_refs[]` ≤ 3, `audio_refs[]` ≤ 3
-- [ ] **Seedance 2.5 + variant:** `variant` ∈ {fast, standard, pro}
+- [ ] **Veo 3.1 + audio:** diálogo `A woman says, "..."` + `SFX:` + `Ambient noise:` en frases aparte, sin etiqueta `Audio:`
+- [ ] **Kling 3.0 + audio:** cada línea `Personaje (tono): línea`; SFX, ambiente y música en frases separadas. `[AUDIO: ...]`, `cfg_scale` o `voice_clone_ref` → IMPORTANTE (sintaxis de Kling 2.x)
+- [ ] **Kling 3.0 + element con voz atada:** el prompt no describe otra voz
+- [ ] **Seedance 2.5 + audio:** misma sintaxis que Veo 3.1 (`A woman says, "..."` + `SFX:` + `Ambient:` + `Music:`)
+- [ ] **Seedance 2.5 + referencias:** `image_refs[]` ≤ 30, `video_refs[]` ≤ 10, `audio_refs[]` ≤ 10, citadas en el prompt como `@Image 1`, `@Video 1`...
+- [ ] **Seedance 2.5 + variant:** no hay variantes Fast / Standard / Pro verificadas; si el JSON trae `variant`, IMPORTANTE
 - [ ] **Runway Gen-4.5 + multi-escena:** Director Mode con scenes[]
 
 ### E. Negative prompt (IMPORTANTE)

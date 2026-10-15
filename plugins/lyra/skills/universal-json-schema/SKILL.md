@@ -132,19 +132,25 @@ allowed-tools:
       "audio_reference": "NO SOPORTADO"
     },
     "kling_3_0": {
-      "cfg_scale": 7.5,
-      "motion_intensity": "medium",
-      "voice_clone_ref": null,
-      "first_frame_ref": null
+      "model": "video_3_0 | video_3_0_omni",
+      "audio": "native | off",
+      "multi_shot": false,
+      "custom_shots": [],
+      "element": null,
+      "voice_bound_to_element": false,
+      "first_frame_ref": null,
+      "last_frame_ref": null
     },
     "seedance_2_5": {
-      "variant": "standard",
-      "auto_storyboard": true,
-      "shot_breakdown": null,
-      "image_refs": [],
-      "video_refs": [],
-      "audio_refs": [],
-      "duration_auto": false
+      "duration_sec": "4-30, o -1 para que decida el modelo",
+      "resolution": "480p | 720p | 1080p",
+      "ratio": "16:9 | 4:3 | 1:1 | 3:4 | 9:16 | 21:9 | adaptive",
+      "generate_audio": true,
+      "image_refs": "0-30",
+      "video_refs": "0-10",
+      "audio_refs": "0-10",
+      "timestamped_segments": [],
+      "extend_from": null
     },
     "runway_gen_45": {
       "motion_brush_zones": [],
@@ -170,7 +176,7 @@ Cuando el usuario no especifica un campo, aplicar defaults sensatos:
 |-------|---------|
 | `visual_style.art_style` | "Photorealistic" |
 | `technical_params.aspect_ratio` | "16:9" (más versátil) |
-| `technical_params.resolution` | Max soportado por plataforma (4K en Nano Banana / GPT Image 2 / Veo 3.1 / Runway; 2K en MJ; 1080p en Kling) |
+| `technical_params.resolution` | Max soportado por plataforma (4K en Nano Banana / GPT Image 2 / Veo 3.1 a 8s / Kling 3.0 / Runway; 2K en MJ; 1080p en Seedance 2.5) |
 | `technical_params.duration_sec` (video) | 8 |
 | `technical_params.fps` (video) | 24 para narrativa, 30 para social |
 | `lighting.type` | "Natural" outdoor / "Studio" producto / "Cinematic" si mood lo pide |
