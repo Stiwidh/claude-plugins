@@ -10,8 +10,10 @@ Los agentes de IA de la comunidad, para que los tengas en tu Claude y se actuali
 | **Vega** | Guiones de vídeo corto (Reels, TikTok, Shorts) listos para grabar. |
 | **Aria** | Secuencias de Instagram Stories que conectan y venden. |
 | **Lyra** | Prompts de imagen y vídeo con IA, adaptados a cada herramienta. |
+| **instagram-analyst** | Analiza cuentas de Instagram de tu competencia o referentes y te dice qué copiar, con datos. |
+| **director-creativo** | Produce vídeo con IA de principio a fin: guion por escenas, cámara, estilo, modelo y control de créditos. |
 
-Trabajan en equipo: Stella planifica y Vega, Aria y Lyra ejecutan. Todos se adaptan a tu marca.
+Trabajan en equipo: Stella planifica, Vega, Aria y Lyra ejecutan, instagram-analyst te trae lo que funciona fuera y director-creativo lo convierte en vídeo. Todos se adaptan a tu marca.
 
 ## Antes de empezar
 
@@ -38,7 +40,7 @@ Trabajan en equipo: Stella planifica y Vega, Aria y Lyra ejecutan. Todos se adap
 /plugin install stella@protocolo-eva
 ```
 
-Cambia `stella` por `vega`, `aria` o `lyra` para instalar los demás.
+Cambia `stella` por `vega`, `aria`, `lyra`, `instagram-analyst` o `director-creativo` para instalar los demás.
 
 ## Dónde funcionan
 

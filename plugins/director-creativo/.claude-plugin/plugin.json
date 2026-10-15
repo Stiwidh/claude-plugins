@@ -1,0 +1,9 @@
+{
+  "name": "director-creativo",
+  "description": "Director creativo by Corvere Solutions para la comunidad de Protocolo EVA. Produce vídeo con IA de principio a fin: concepto, guion por escenas con la cámara de cada plano, estilo visual coherente, qué modelo usar en cada plano, prueba barata antes del final, control de créditos y QA. Genera con Higgsfield si tienes su conector conectado en Claude.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Corvere Solutions"
+  },
+  "homepage": "https://corveresolutions.com"
+}

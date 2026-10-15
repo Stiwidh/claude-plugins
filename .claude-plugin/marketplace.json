@@ -40,6 +40,24 @@
       "author": {
         "name": "Corvere Solutions"
       }
+    },
+    {
+      "name": "instagram-analyst",
+      "source": "./plugins/instagram-analyst",
+      "description": "Analista de Instagram by Corvere Solutions para la comunidad de Protocolo EVA. Le pasas cuentas de tu competencia o de referentes y entra con el navegador a sus perfiles, recoge reels y posts (reproducciones, likes, comentarios, gancho, formato) y saca métricas de verdad: engagement rate, qué post rompió y ritmo. Lo juzga con el criterio de Stella, Vega y Aria y te entrega informe, benchmark, creativos ganadores y un plan de contenido para tu marca.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Corvere Solutions"
+      }
+    },
+    {
+      "name": "director-creativo",
+      "source": "./plugins/director-creativo",
+      "description": "Director creativo by Corvere Solutions para la comunidad de Protocolo EVA. Produce vídeo con IA de principio a fin: concepto, guion por escenas con la cámara de cada plano, estilo visual coherente, qué modelo usar en cada plano, prueba barata antes del final, control de créditos y QA. Genera con Higgsfield si tienes su conector conectado en Claude.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Corvere Solutions"
+      }
     }
   ]
 }
