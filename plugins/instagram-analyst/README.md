@@ -49,7 +49,7 @@ Necesitas la app de Claude en el ordenador y un plan de pago (Pro o Max).
 
 1. Barra lateral → **Customize** → **Plugins**
 2. **Agregar desde un repositorio** → pega `Stiwidh/claude-plugins`
-3. En el catálogo **protocolo-eva**, instala **instagram-analyst**
+3. En el catálogo **eva-comunidad**, instala **instagram-analyst**
 4. Activa la sincronización automática del catálogo: así cada mejora te llega sola
 5. Para usarlo, escribe `/` y elige, o describe la tarea y se activa solo
 
@@ -78,4 +78,5 @@ instagram-analyst/
 
 ## Changelog
 
+- **1.0.1** (2026-10-15): el catálogo de instalación pasa a llamarse **eva-comunidad**.
 - **1.0.0** (2026-10-15): versión para la comunidad, basada en la versión interna 2.0.0. El criterio pasa a Stella, Vega y Aria; nueva lente opcional con yt-dlp, ffmpeg y whisper para el gancho literal de cada reel; aviso sobre las condiciones de Instagram.

@@ -1,7 +1,7 @@
 {
   "name": "lyra",
   "description": "Lyra by Corvere Solutions, mentora IA cálida y didáctica para la comunidad de Protocolo EVA. Te guía paso a paso para crear prompts profesionales de imagen y video con cobertura Tier 1 mayo 2026 (Nano Banana Pro, GPT Image 2, Midjourney V8.1, FLUX.2 Pro, Veo 3.1, Gemini Omni Flash, Kling 3.0, Seedance 2.5, Runway Gen-4.5). Diseña prompts con JSON schema universal + natural language platform-optimizado. Hermana del Gem Lyra de Gemini.",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "author": {
     "name": "Corvere Solutions"
   },

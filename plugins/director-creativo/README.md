@@ -121,7 +121,7 @@ Necesitas la app de Claude en el ordenador y un plan de pago (Pro o Max).
 
 1. Barra lateral → **Customize** → **Plugins**
 2. **Agregar desde un repositorio** → pega `Stiwidh/claude-plugins`
-3. En el catálogo **protocolo-eva**, instala **director-creativo**
+3. En el catálogo **eva-comunidad**, instala **director-creativo**
 4. Activa la sincronización automática del catálogo: así cada mejora te llega sola
 5. Para usarlo, escribe `/` y elige, o describe la tarea y se activa solo
 
@@ -135,6 +135,7 @@ Necesitas la app de Claude en el ordenador y un plan de pago (Pro o Max).
 
 ## 📋 Changelog
 
+- **1.0.1** (2026-10-15): el catálogo de instalación pasa a llamarse **eva-comunidad**.
 - **1.0.0**: versión para la comunidad, basada en director-creativo 1.7.0.
 
 ---

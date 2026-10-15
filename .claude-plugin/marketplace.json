@@ -1,5 +1,5 @@
 {
-  "name": "protocolo-eva",
+  "name": "eva-comunidad",
   "owner": {
     "name": "Protocolo EVA"
   },
@@ -9,7 +9,7 @@
       "name": "stella",
       "source": "./plugins/stella",
       "description": "Stella by Corvere Solutions, mentora IA de estrategia de contenido para la comunidad de Protocolo EVA. Convierte el 'no sé qué publicar' en un plan que atrae, conecta y vende: pilares de contenido, embudo TOFU/MOFU/BOFU, niveles de consciencia, mix de formatos, cadencia sostenible, ángulos, repurposing y calendario de lanzamiento. Adaptable a la marca de cada creadora. Decide QUÉ crear y CUÁNDO; la ejecución la hacen Vega (guiones), Aria (stories) y Lyra (visuales).",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": {
         "name": "Corvere Solutions"
       }
@@ -18,7 +18,7 @@
       "name": "vega",
       "source": "./plugins/vega",
       "description": "Vega by Corvere Solutions, mentora IA de guiones virales para la comunidad de Protocolo EVA. Convierte cualquier idea en un guion de vídeo corto vertical (Reels, TikTok, Shorts) listo para grabar: la batalla de los 3 segundos, banco de hooks, curva de retención, estructura Hook-Tensión-Valor-Payoff-CTA, 8 formatos y el guion como pieza del embudo TOFU/MOFU/BOFU. Adaptable a la marca de cada creadora. Se coordina con Stella (estrategia), Aria (stories) y Lyra (visuales).",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": {
         "name": "Corvere Solutions"
       }
@@ -27,7 +27,7 @@
       "name": "aria",
       "source": "./plugins/aria",
       "description": "Aria by Corvere Solutions, mentora IA cálida y didáctica para la comunidad de Protocolo EVA. Te ayuda a crear secuencias de Instagram Stories que conectan y venden aplicando el Sistema Aria: los 3 tipos canónicos (VENTA / MARCA / VENDER SIN VENDER), opener design, calendario semanal balanceado e integración ManyChat. Genera secuencias listas para publicar para tu marca personal sin que tengas que ser experta en storytelling. Hermana del Gem Aria de Gemini.",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": {
         "name": "Corvere Solutions"
       }
@@ -36,7 +36,7 @@
       "name": "lyra",
       "source": "./plugins/lyra",
       "description": "Lyra by Corvere Solutions, mentora IA cálida y didáctica para la comunidad de Protocolo EVA. Te guía paso a paso para crear prompts profesionales de imagen y video con cobertura Tier 1 mayo 2026 (Nano Banana Pro, GPT Image 2, Midjourney V8.1, FLUX.2 Pro, Veo 3.1, Gemini Omni Flash, Kling 3.0, Seedance 2.5, Runway Gen-4.5). Diseña prompts con JSON schema universal + natural language platform-optimizado. Hermana del Gem Lyra de Gemini.",
-      "version": "2.2.0",
+      "version": "2.2.1",
       "author": {
         "name": "Corvere Solutions"
       }
@@ -45,7 +45,7 @@
       "name": "instagram-analyst",
       "source": "./plugins/instagram-analyst",
       "description": "Analista de Instagram by Corvere Solutions para la comunidad de Protocolo EVA. Le pasas cuentas de tu competencia o de referentes y entra con el navegador a sus perfiles, recoge reels y posts (reproducciones, likes, comentarios, gancho, formato) y saca métricas de verdad: engagement rate, qué post rompió y ritmo. Lo juzga con el criterio de Stella, Vega y Aria y te entrega informe, benchmark, creativos ganadores y un plan de contenido para tu marca.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Corvere Solutions"
       }
@@ -54,7 +54,7 @@
       "name": "director-creativo",
       "source": "./plugins/director-creativo",
       "description": "Director creativo by Corvere Solutions para la comunidad de Protocolo EVA. Produce vídeo con IA de principio a fin: concepto, guion por escenas con la cámara de cada plano, estilo visual coherente, qué modelo usar en cada plano, prueba barata antes del final, control de créditos y QA. Genera con Higgsfield si tienes su conector conectado en Claude.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Corvere Solutions"
       }

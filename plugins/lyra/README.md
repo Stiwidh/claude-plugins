@@ -172,7 +172,7 @@ Necesitas la app de Claude en el ordenador y un plan de pago (Pro o Max).
 
 1. Barra lateral → **Customize** → **Plugins**
 2. **Agregar desde un repositorio** → pega `Stiwidh/claude-plugins`
-3. En el catálogo **protocolo-eva**, instala **lyra**
+3. En el catálogo **eva-comunidad**, instala **lyra**
 4. Activa la sincronización automática del catálogo: así cada mejora te llega sola
 5. Para usarlo, escribe `/` y elige, o describe la tarea y se activa solo
 
@@ -187,6 +187,9 @@ Si antes lo instalaste subiendo `lyra.zip`, quita esa copia para no tenerlo repe
 ---
 
 ## 📋 Changelog
+
+### v2.2.1 (2026-10-15)
+- El catálogo de instalación pasa a llamarse **eva-comunidad**.
 
 ### v2.2.0 (2026-10-15)
 **Kling 3.0 y Seedance 2.5 con sus datos de verdad.** La corrección anterior cambió el nombre de los modelos pero dejó dentro los datos de las versiones viejas. Ahora, verificado contra las fuentes oficiales (URL y fecha en cada ficha):

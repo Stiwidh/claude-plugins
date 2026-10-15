@@ -30,14 +30,14 @@ Trabajan en equipo: Stella planifica, Vega, Aria y Lyra ejecutan, instagram-anal
    Stiwidh/claude-plugins
    ```
 
-4. Aparecerá el catálogo **protocolo-eva**. Instala los plugins que quieras.
+4. Aparecerá el catálogo **eva-comunidad**. Instala los plugins que quieras.
 5. Activa la **sincronización automática** de ese catálogo. Así cada mejora te llega sola, sin volver a instalar nada.
 
 ### Si usas Claude Code
 
 ```bash
 /plugin marketplace add Stiwidh/claude-plugins
-/plugin install stella@protocolo-eva
+/plugin install stella@eva-comunidad
 ```
 
 Cambia `stella` por `vega`, `aria`, `lyra`, `instagram-analyst` o `director-creativo` para instalar los demás.
